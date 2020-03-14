@@ -30,14 +30,14 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += E:\opencv\build\include
+INCLUDEPATH += C:\opencv\build\include
 
-LIBS += E:\opencv\build\bin\libopencv_core420.dll
-LIBS += E:\opencv\build\bin\libopencv_highgui420.dll
-LIBS += E:\opencv\build\bin\libopencv_imgcodecs420.dll
-LIBS += E:\opencv\build\bin\libopencv_imgproc420.dll
-LIBS += E:\opencv\build\bin\libopencv_features2d420.dll
-LIBS += E:\opencv\build\bin\libopencv_calib3d420.dll
+LIBS += C:\opencv\build\bin\libopencv_core420.dll
+LIBS += C:\opencv\build\bin\libopencv_highgui420.dll
+LIBS += C:\opencv\build\bin\libopencv_imgcodecs420.dll
+LIBS += C:\opencv\build\bin\libopencv_imgproc420.dll
+LIBS += C:\opencv\build\bin\libopencv_features2d420.dll
+LIBS += C:\opencv\build\bin\libopencv_calib3d420.dll
 
 # more correct variant, how set includepath and libs for mingw
 # add system variable: OPENCV_SDK_DIR=D:/opencv/opencv-build/install
