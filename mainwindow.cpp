@@ -16,108 +16,138 @@ typedef vector<double> Array;
 typedef vector<Array> Matrix;
 typedef vector<Matrix> Image;
 
-Matrix getGaussian(int height, int width, double sigma)
+void insertionSort(int arr[], int n)
 {
-    Matrix kernel(height, Array(width));
-    double sum=0.0;
-    int i,j;
+    int i, key, j;
+    for (i = 1; i < n; i++)
+    {
+        key = arr[i];
+        j = i - 1;
 
-    for (i=0 ; i<height ; i++) {
-        for (j=0 ; j<width ; j++) {
-            kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
-            sum += kernel[i][j];
+        /* Move elements of arr[0..i-1], that are
+        greater than key, to one position ahead
+        of their current position */
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
         }
+        arr[j + 1] = key;
     }
-
-    for (i=0 ; i<height ; i++) {
-        for (j=0 ; j<width ; j++) {
-            kernel[i][j] /= sum;
-        }
-    }
-
-    return kernel;
 }
 
-Image loadImage()
-{
-    cv::Mat image = cv::imread("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg", 1);
-    imshow( "Original_image", image );
-    Image imageMatrix(3, Matrix(image.rows, Array(image.cols)));
-    for (int z = 0; z < image.channels(); z++)
-        for (int i = 0; i < image.rows; i++)
-          for (int j = 0; j < image.cols; j++){
-            imageMatrix[z][i][j] = image.at<cv::Vec3f>(i,j)[z] ;
-          }
-    return imageMatrix;
-}
-
-void saveImage(Image &image, const char *filename)
-{
-    assert(image.size()==3);
-
-    int height = image[0].size();
-    int width = image[0][0].size();
-    cv::Mat NewImage = cv::Mat(width, height, CV_8U);
-    imshow( "Gaussian_image", NewImage );
-    try {
-           cv::imwrite(filename, NewImage);
-       }
-       catch (runtime_error& ex) {
-           fprintf(stderr, "Exception converting image to PNG format: %s\n", ex.what());
-           exit(1);
-       }
-}
-
-Image applyFilter(Image &image, Matrix &filter){
-    assert(image.size()==3 && filter.size()!=0);
-
-    int height = image[0].size();
-    int width = image[0][0].size();
-    int filterHeight = filter.size();
-    int filterWidth = filter[0].size();
-    int newImageHeight = height-filterHeight+1;
-    int newImageWidth = width-filterWidth+1;
-    int d,i,j,h,w;
-
-    Image newImage(3, Matrix(newImageHeight, Array(newImageWidth)));
-
-    for (d=0 ; d<3 ; d++) {
-        for (i=0 ; i<newImageHeight ; i++) {
-            for (j=0 ; j<newImageWidth ; j++) {
-                for (h=i ; h<i+filterHeight ; h++) {
-                    for (w=j ; w<j+filterWidth ; w++) {
-                        newImage[d][i][j] += filter[h-i][w-j]*image[d][h][w];
-                    }
-                }
-            }
-        }
-    }
-
-    return newImage;
-}
-
-Image applyFilter(Image &image, Matrix &filter, int times)
-{
-    Image newImage = image;
-    for(int i=0 ; i<times ; i++) {
-        newImage = applyFilter(newImage, filter);
-    }
-    return newImage;
-}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    Matrix filter = getGaussian(5, 5, 10.0);
 
     cout << "Loading image..." << endl;
-    Image image = loadImage();
-    cout << "Applying filter..." << endl;
-    Image newImage = applyFilter(image, filter);
-    cout << "Saving image..." << endl;
-    saveImage(newImage, "newImage.png");
+    int window[9];
+    Mat image = cv::imread("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg", 1);
+    imshow( "Original Image", image);
+    // Split the image into different channels
+    vector<Mat> rgbChannels(3);
+    split(image, rgbChannels);
+
+    // Show individual channels
+    Mat zero, r_img, g_img, b_img;
+    zero = Mat::zeros(Size(image.cols, image.rows), CV_8UC1);
+
+    // Showing Red Channel
+    // G and B channels are kept as zero matrix for visual perception
+
+    vector<Mat> channels;
+    channels.push_back(zero);
+    channels.push_back(zero);
+    channels.push_back(rgbChannels[2]);
+
+    /// Merge the three channels
+    merge(channels, r_img);
+    imshow("Red", r_img);
+
+    for(int row = 1; row <= image.rows; ++row)
+        {
+            for(int col = 1; col <= image.cols; ++col)
+            {
+                //neighbor pixel values are stored in window including this pixel
+                window[0] = r_img.at<cv::Vec3f>(row-1,col-1)[2];
+                window[1] = r_img.at<cv::Vec3f>(row-1,col)[2];
+                window[2] = r_img.at<cv::Vec3f>(row-1,col+1)[2];
+                window[3] = r_img.at<cv::Vec3f>(row,col-1)[2];
+                window[4] = r_img.at<cv::Vec3f>(row,col)[2];
+                window[5] = r_img.at<cv::Vec3f>(row,col+1)[2];
+                window[6] = r_img.at<cv::Vec3f>(row+1,col-1)[2];
+                window[7] = r_img.at<cv::Vec3f>(row+1,col)[2];
+                window[8] = r_img.at<cv::Vec3f>(row+1,col+1)[2];
+
+                //sort window array
+                insertionSort(window,9);
+
+                image.at<cv::Vec3f>(row,col)[2] =window[4];
+            }
+        }
+
+
+        // Showing Green Channel
+        vector<Mat> channels1;
+        channels1.push_back(zero);
+        channels1.push_back(rgbChannels[1]);
+        channels1.push_back(zero);
+        merge(channels1, g_img);
+        imshow("Green", g_img);
+        for(int row = 1; row <= image.rows; ++row)
+            {
+                for(int col = 1; col <= image.cols; ++col)
+                {
+                    //neighbor pixel values are stored in window including this pixel
+                    window[0] = r_img.at<cv::Vec3f>(row-1,col-1)[1];
+                    window[1] = r_img.at<cv::Vec3f>(row-1,col)[1];
+                    window[2] = r_img.at<cv::Vec3f>(row-1,col+1)[1];
+                    window[3] = r_img.at<cv::Vec3f>(row,col-1)[1];
+                    window[4] = r_img.at<cv::Vec3f>(row,col)[1];
+                    window[5] = r_img.at<cv::Vec3f>(row,col+1)[1];
+                    window[6] = r_img.at<cv::Vec3f>(row+1,col-1)[1];
+                    window[7] = r_img.at<cv::Vec3f>(row+1,col)[1];
+                    window[8] = r_img.at<cv::Vec3f>(row+1,col+1)[1];
+
+                    //sort window array
+                    insertionSort(window,9);
+
+                    image.at<cv::Vec3f>(row,col)[1] =window[4];
+                }
+            }
+
+        // Showing Blue Channel
+        vector<Mat> channels2;
+        channels2.push_back(rgbChannels[0]);
+        channels2.push_back(zero);
+        channels2.push_back(zero);
+        merge(channels2, b_img);
+        imshow("Blue", b_img);
+        for(int row = 1; row <= image.rows; ++row)
+            {
+                for(int col = 1; col <= image.cols; ++col)
+                {
+                    //neighbor pixel values are stored in window including this pixel
+                    window[0] = r_img.at<cv::Vec3f>(row-1,col-1)[0];
+                    window[1] = r_img.at<cv::Vec3f>(row-1,col)[0];
+                    window[2] = r_img.at<cv::Vec3f>(row-1,col+1)[0];
+                    window[3] = r_img.at<cv::Vec3f>(row,col-1)[0];
+                    window[4] = r_img.at<cv::Vec3f>(row,col)[0];
+                    window[5] = r_img.at<cv::Vec3f>(row,col+1)[0];
+                    window[6] = r_img.at<cv::Vec3f>(row+1,col-1)[0];
+                    window[7] = r_img.at<cv::Vec3f>(row+1,col)[0];
+                    window[8] = r_img.at<cv::Vec3f>(row+1,col+1)[0];
+
+                    //sort window array
+                    insertionSort(window,9);
+
+                    image.at<cv::Vec3f>(row,col)[0] =window[4];
+                }
+            }
+        imshow("Median filter", image);
     cout << "Done!" << endl;
 
 }
