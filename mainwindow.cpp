@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // read an image
-    cv::Mat image = cv::imread("C:\\Users\\alexandra.hoinoiu\\Desktop\\download.jpg", 1);
+    cv::Mat image = cv::imread("C:\\Users\\Alex\\Desktop\\pisica.jpg", 1);
     //Blur the image with 3x3 Gaussian kernel
     Mat image_blurred_with_3x3_kernel;
     GaussianBlur(image, image_blurred_with_3x3_kernel, Size(3, 3), 0);
