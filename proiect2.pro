@@ -20,7 +20,10 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    gaussianfilter.h \
+    mainwindow.h \
+    medianfilter.h \
+    rgbchannels.h
 
 FORMS += \
     mainwindow.ui
