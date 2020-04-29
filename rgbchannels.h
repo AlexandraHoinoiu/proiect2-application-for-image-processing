@@ -18,14 +18,14 @@ class RGBChannels
 public:
     RGBChannels(string path)
     {
-        image_path = path;
-        setImage();
-        setZero();
+        this->image_path = path;
+        this->setImage();
+        this->setZero();
     }
     void setImage()
     {
         // Load an image
-        image = imread(image_path, IMREAD_COLOR);
+        this->image = imread(image_path, IMREAD_COLOR);
 
         if( !image.data )
         { exit(1); }

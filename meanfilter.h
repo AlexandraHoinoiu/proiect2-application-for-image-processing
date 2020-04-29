@@ -1,5 +1,5 @@
-#ifndef MEDIANFILTER_H
-#define MEDIANFILTER_H
+#ifndef MEANFILTER_H
+#define MEANFILTER_H
 #include<iostream>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
@@ -7,12 +7,13 @@
 using namespace std;
 using namespace cv;
 
-class MedianFilter
+
+class MeanFilter
 {
     string image_path;
     Mat image;
 public:
-    MedianFilter(string path)
+    MeanFilter(string path)
     {
         this->image_path = path;
         this->setImage();
@@ -25,27 +26,21 @@ public:
         if( !image.data )
         { exit(1); }
     }
-    void insertionSort(int arr[])
+    float mean(int arr[])
     {
-        int i, key, j;
+        int i, avr = 0;
         for (i = 1; i < 9; i++)
         {
-            key = arr[i];
-            j = i - 1;
-            while (j >= 0 && arr[j] > key)
-            {
-                arr[j + 1] = arr[j];
-                j = j - 1;
-            }
-            arr[j + 1] = key;
+            avr += arr[i];
         }
+        return avr/9;
     }
     void applyFilter()
     {
         Mat dst;
         image.copyTo(dst);
         int window[9];
-        imshow( "Original_image2", image );
+        imshow( "Original_image3", image );
           try
           {
               for(int i = 1; i < image.rows - 1; i++) {
@@ -60,18 +55,17 @@ public:
                            window[6] = int(image.at<Vec3b>(i+1, j-1)[k]);
                            window[7] = int(image.at<Vec3b>(i+1, j)[k]);
                            window[8] = int(image.at<Vec3b>(i+1, j+1)[k]);
-                           this->insertionSort(window);
-                            dst.at<Vec3b>(i, j)[k] = window[4];
+                            dst.at<Vec3b>(i, j)[k] =  this->mean(window);
                       }
                   }
               }
-              imshow( "Median_filter_image", dst );
+              imshow( "Mean_filter_image", dst );
           }
           catch (Exception e)
           {
           cout<<e.msg;
           }
     }
-
 };
-#endif // MEDIANFILTER_H
+
+#endif // MEANFILTER_H

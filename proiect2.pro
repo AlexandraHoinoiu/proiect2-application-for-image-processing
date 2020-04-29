@@ -22,8 +22,10 @@ SOURCES += \
 HEADERS += \
     gaussianfilter.h \
     mainwindow.h \
+    meanfilter.h \
     medianfilter.h \
-    rgbchannels.h
+    rgbchannels.h \
+    saltpeppernoise.h
 
 FORMS += \
     mainwindow.ui

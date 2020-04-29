@@ -3,6 +3,8 @@
 #include "gaussianfilter.h"
 #include "medianfilter.h"
 #include "rgbchannels.h"
+#include "saltpeppernoise.h"
+#include "meanfilter.h"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -25,9 +27,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    GaussianFilter gaussian("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
-    Matrix filter = gaussian.getGaussian(5,5,10.0);
-    gaussian.applyFilter(filter);
+    SaltPepperNoise noise_salt_pepper("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+    noise_salt_pepper.applyNoise(20);
+    MedianFilter median_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\Image_with_noise_salt_and_pepper.jpg");
+    median_filter.applyFilter();
+    MeanFilter mean_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\Image_with_noise_salt_and_pepper.jpg");
+    mean_filter.applyFilter();
+    RGBChannels rgb("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+    rgb.get_R_Channel();
+    rgb.get_G_Channel();
+    rgb.get_B_Channel();
+//    GaussianFilter gaussian_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+//    gaussian_filter.applyFilter(5, 1.5);
+
+
 }
 
 MainWindow::~MainWindow()

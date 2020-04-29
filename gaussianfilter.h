@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cstdio>
+#include<cmath>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
@@ -13,21 +15,16 @@ using namespace std;
 
 class GaussianFilter
 {
-    typedef vector<double> Array;
-    typedef vector<Array> Matrix;
-    typedef vector<Matrix> Image;
     string image_path;
     Mat image;
+    int radius;
+    double kernel[1000][1000];
 
     public:
     GaussianFilter(string path)
     {
-        image_path = path;
-        setImage();
-    }
-    void setImagePath(string path)
-    {
-        image_path = path;
+        this->image_path = path;
+        this->setImage();
     }
     void setImage() {
         // Load an image
@@ -36,56 +33,100 @@ class GaussianFilter
         if( !image.data )
         { exit(1); }
     }
-
-    Matrix getGaussian(int height, int width, double sigma)
+    double getModel(double x, double y, double sigma)
     {
-        Matrix kernel(height, Array(width));
+        return exp(-(x*x+y*y)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+    }
+
+    void getGaussian(int radius, double sigma)
+    {
         double sum=0.0;
         int i,j;
-
-        for (i=0 ; i<height ; i++) {
-            for (j=0 ; j<width ; j++) {
-                kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
+        for (i=0 ; i<radius ; i++) {
+            for (j=0 ; j<radius ; j++) {
+                kernel[i][j] = this->getModel(i-radius/2, j-radius/2, sigma);
                 sum += kernel[i][j];
             }
         }
 
-        for (i=0 ; i<height ; i++) {
-            for (j=0 ; j<width ; j++) {
+        for (i=0 ; i<radius ; i++) {
+            for (j=0 ; j<radius ; j++) {
                 kernel[i][j] /= sum;
             }
         }
-
-        return kernel;
     }
-
-    void applyFilter(Matrix &filter)
+    int getColorValue (double color[1000][1000])
     {
-        int height = image.cols;
-        int width = image.rows;
-        int filterHeight = filter.size();
-        int filterWidth = filter[0].size();
-        int newImageHeight = height-filterHeight+1;
-        int newImageWidth = width-filterWidth+1;
-        Mat newImage(cv::Size(newImageHeight,newImageWidth), CV_32FC(3));
-        imshow( "Original_image", image );
-        int d,i,j,h,w;
-        for (d = 0; d < image.channels(); d++) {
-            for (i=0 ; i<newImageHeight ; i++) {
-                for (j=0 ; j<newImageWidth ; j++) {
-                    for (h=i ; h<i+filterHeight ; h++) {
-                        for (w=j ; w<j+filterWidth ; w++) {
-                            Vec3b &intensityNewImage = newImage.at<Vec3b>(j, i);
-                            Vec3b intensityImage = image.at<Vec3b>(h, w);
-                            cout<<intensityImage<<" ";
-//                             intensityNewImage.val[d] = intensityImage.val[d];
-                        }
-                    }
-                }
+        double sum = 0.0;
+        for (int i=0 ; i<radius ; i++) {
+            for (int j=0 ; j<radius ; j++) {
+                sum +=color[i][j];
             }
 
         }
-        imshow( "Gaussian_image", newImage );
+        return int(sum);
+    }
+
+    void applyFilter(int radius,  double sigma)
+    {
+        this->radius = radius;
+        double kernel[radius][radius];
+        Mat dst;
+        double sum = 0.0;
+        image.copyTo(dst);
+        this->getGaussian(5,sigma);
+        int x,y,i,j;
+        imshow( "Original_image", image );
+         for (x=0 ; x<image.cols ; x++) {
+             for (y=0 ; y<image.rows ; y++) {
+                 double colorR[radius][radius];
+                 double colorG[radius][radius];
+                 double colorB[radius][radius];
+                 for (i=0 ; i<radius; i++) {
+                     for (j=0 ; j<radius ; j++) {
+                         try {
+                             int sampleX = x + i - (radius/2);
+                             int sampleY = y + j - (radius/2);
+                             double curent = kernel[i][j];
+                             double sampledColor[3];
+                             sampledColor[0] = image.at<Vec3b>(sampleX, sampleY)[0];
+                             sampledColor[1] = image.at<Vec3b>(sampleX, sampleY)[1];
+                             sampledColor[2] = image.at<Vec3b>(sampleX, sampleY)[2];
+                             colorR[i][j] = curent * sampledColor[0];
+                             colorG[i][j] = curent * sampledColor[1];
+                             colorB[i][j] = curent * sampledColor[2];
+                             sum = 0.0;
+                             for (int i=0 ; i<radius ; i++) {
+                                 for (int j=0 ; j<radius ; j++) {
+                                     sum +=colorR[i][j];
+                                 }
+
+                             }
+                             dst.at<Vec3b>(y, x)[0] = int(sum);
+                             sum = 0.0;
+                             for (int i=0 ; i<radius ; i++) {
+                                 for (int j=0 ; j<radius ; j++) {
+                                     sum +=colorG[i][j];
+                                 }
+
+                             }
+                             dst.at<Vec3b>(y, x)[1] = int(sum);
+                             sum = 0.0;
+                             for (int i=0 ; i<radius ; i++) {
+                                 for (int j=0 ; j<radius ; j++) {
+                                     sum +=colorR[i][j];
+                                 }
+
+                             }
+                             dst.at<Vec3b>(y, x)[2] = int(sum);
+                         } catch (Exception e) {
+                             cout<<e.msg;
+                         }
+                     }
+                 }
+             }
+         }
+         imshow( "Gaussian_Filter_image", dst);
     }
 };
 
