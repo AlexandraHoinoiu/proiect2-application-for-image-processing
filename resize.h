@@ -11,10 +11,12 @@ class Resize
 private:
     string image_path;
     Mat image;
+    int coef;
 public:
-    Resize(string path)
+    Resize(string path,int coef)
     {
         this->image_path = path;
+        this->coef=coef;
         this->setImage();
     }
     void setImage()
@@ -25,25 +27,27 @@ public:
         if( !image.data )
         { exit(1); }
     }
-    /*void resize(){
-        Mat dst;
-        image.copyTo(dst);
-        int coef=2;
-        imshow( "Original_resize*2", image );
-        try
-        {
-            for(int i = 1; i < image.rows - 1; i++) {
-                for(int j = 1; j < image.cols - 1; j++) {
+    void resize(){
+        Mat M(image.rows*coef,image.cols*coef, CV_8UC3, Scalar(0,0,0));
+        int x,y;
+        imshow( "Original_before", image );
+            for(int i = 0; i < image.rows*coef; i++) {
+                for(int j = 0; j < image.cols*coef; j++) {
                     for(int k = 0; k < 3; k++) {
-                        dst.at<Vec3b>(i-1, j-1)=image.at<Vec3b>(i-1, j-1)[k];
-                        dst.at<Vec3b>(i-1, j)=image.at<Vec3b>(i-1, j)[k]/coef+image.at<Vec3b>(i-1, j-1)[k];
-                        dst.at<Vec3b>(i-1, j+1)=image.at<Vec3b>(i-1, j)[k]/coef+image.at<Vec3b>(i-1, j-1)[k];
-
+                        x=floor(i/coef);
+                        y=floor(j/coef);
+                        if(x==0) x=1;
+                        if(y==0) y=1;
+                        M.at<Vec3b>(i,j)[k]=image.at<Vec3b>(x,y)[k];
                     }
                 }
             }
-        }
-    }*/
+
+    imshow( "Original_after", M );
+
+}
+
+
 };
 
 #endif // RESIZE_H

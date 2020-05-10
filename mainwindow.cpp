@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include "resize.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
@@ -27,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    SaltPepperNoise noise_salt_pepper("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
+    /*SaltPepperNoise noise_salt_pepper("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
     noise_salt_pepper.applyNoise(20);
     MedianFilter median_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\Image_with_noise_salt_and_pepper.jpg");
     median_filter.applyFilter();
@@ -39,8 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     rgb.get_B_Channel();
 //    GaussianFilter gaussian_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
 //    gaussian_filter.applyFilter(5, 1.5);
-
-
+*/
+    Resize resize("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg",3);
+    resize.resize();
 }
 
 MainWindow::~MainWindow()
