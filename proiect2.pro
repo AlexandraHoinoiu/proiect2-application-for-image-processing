@@ -21,6 +21,7 @@ SOURCES += \
     resize.cpp
 
 HEADERS += \
+    filter.h \
     gaussianfilter.h \
     mainwindow.h \
     meanfilter.h \
