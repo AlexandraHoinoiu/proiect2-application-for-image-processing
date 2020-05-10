@@ -17,32 +17,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    resize.cpp
 
 HEADERS += \
     gaussianfilter.h \
     mainwindow.h \
     meanfilter.h \
     medianfilter.h \
+    resize.h \
     rgbchannels.h \
     saltpeppernoise.h
 
-FORMS += \
-    mainwindow.ui
+FORMS    += mainwindow.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+INCLUDEPATH += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\include
 
-INCLUDEPATH += C:\opencv\build\include
-
-LIBS += C:\opencv\build\bin\libopencv_core420.dll
-LIBS += C:\opencv\build\bin\libopencv_highgui420.dll
-LIBS += C:\opencv\build\bin\libopencv_imgcodecs420.dll
-LIBS += C:\opencv\build\bin\libopencv_imgproc420.dll
-LIBS += C:\opencv\build\bin\libopencv_features2d420.dll
-LIBS += C:\opencv\build\bin\libopencv_calib3d420.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_core430.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_highgui430.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_imgcodecs430.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_imgproc430.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_features2d430.dll
+LIBS += C:\Users\Alex\Downloads\opencv-4.3.0-dldt-2020.1-vc16-avx2-debug\opencv\build\bin\libopencv_calib3d430.dll
 
 # more correct variant, how set includepath and libs for mingw
 # add system variable: OPENCV_SDK_DIR=D:/opencv/opencv-build/install

@@ -3,29 +3,15 @@
 #include<iostream>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
-
+#include <filter.h>
 using namespace std;
 using namespace cv;
 
 
-class MeanFilter
+class MeanFilter: public Filter
 {
-    string image_path;
-    Mat image;
 public:
-    MeanFilter(string path)
-    {
-        this->image_path = path;
-        this->setImage();
-    }
-
-    void setImage() {
-        // Load an image
-        this->image = imread(image_path, IMREAD_COLOR);
-
-        if( !image.data )
-        { exit(1); }
-    }
+    MeanFilter(string image_path):Filter(image_path){};
     float mean(int arr[])
     {
         int i, avr = 0;
