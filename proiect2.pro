@@ -17,8 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
-    resize.cpp
+    mainwindow.cpp
 
 HEADERS += \
     filter.h \
