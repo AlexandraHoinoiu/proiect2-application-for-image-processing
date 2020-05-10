@@ -10,29 +10,18 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <stdio.h>
+#include <filter.h>
 using namespace cv;
 using namespace std;
 
-class GaussianFilter
+class GaussianFilter : public Filter
 {
-    string image_path;
-    Mat image;
+private:
     int radius;
     double kernel[1000][1000];
 
     public:
-    GaussianFilter(string path)
-    {
-        this->image_path = path;
-        this->setImage();
-    }
-    void setImage() {
-        // Load an image
-        image = imread(image_path, IMREAD_COLOR);
-
-        if( !image.data )
-        { exit(1); }
-    }
+    GaussianFilter(string image_path):Filter(image_path){};
     double getModel(double x, double y, double sigma)
     {
         return exp(-(x*x+y*y)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
