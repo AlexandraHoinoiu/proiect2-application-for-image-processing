@@ -17,23 +17,25 @@ using namespace std;
 class GaussianFilter : public Filter
 {
 private:
-    int radius;
+    int radius = 3;
     double kernel[1000][1000];
+    float sigma = 1.5;
 
     public:
     GaussianFilter(string image_path):Filter(image_path){};
-    double getModel(double x, double y, double sigma)
+
+    double getModel(double x, double y)
     {
         return exp(-(x*x+y*y)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
     }
 
-    void getGaussian(int radius, double sigma)
+    void getGaussian()
     {
         double sum=0.0;
         int i,j;
         for (i=0 ; i<radius ; i++) {
             for (j=0 ; j<radius ; j++) {
-                kernel[i][j] = this->getModel(i-radius/2, j-radius/2, sigma);
+                kernel[i][j] = this->getModel(i-radius/2, j-radius/2);
                 sum += kernel[i][j];
             }
         }
@@ -44,78 +46,29 @@ private:
             }
         }
     }
-    int getColorValue (double color[1000][1000])
+    void applyFilter()
     {
-        double sum = 0.0;
-        for (int i=0 ; i<radius ; i++) {
-            for (int j=0 ; j<radius ; j++) {
-                sum +=color[i][j];
-            }
-
-        }
-        return int(sum);
-    }
-
-    void applyFilter(int radius,  double sigma)
-    {
-        this->radius = radius;
-        double kernel[radius][radius];
         Mat dst;
-        double sum = 0.0;
-        image.copyTo(dst);
-        this->getGaussian(5,sigma);
-        int x,y,i,j;
+//        image.copyTo(dst);
+//        this->getGaussian();
+//        int x,y,k,i,j,step=radius/2;;
+//        float sum;
         imshow( "Original_image", image );
-         for (x=0 ; x<image.cols ; x++) {
-             for (y=0 ; y<image.rows ; y++) {
-                 double colorR[radius][radius];
-                 double colorG[radius][radius];
-                 double colorB[radius][radius];
-                 for (i=0 ; i<radius; i++) {
-                     for (j=0 ; j<radius ; j++) {
-                         try {
-                             int sampleX = x + i - (radius/2);
-                             int sampleY = y + j - (radius/2);
-                             double curent = kernel[i][j];
-                             double sampledColor[3];
-                             sampledColor[0] = image.at<Vec3b>(sampleX, sampleY)[0];
-                             sampledColor[1] = image.at<Vec3b>(sampleX, sampleY)[1];
-                             sampledColor[2] = image.at<Vec3b>(sampleX, sampleY)[2];
-                             colorR[i][j] = curent * sampledColor[0];
-                             colorG[i][j] = curent * sampledColor[1];
-                             colorB[i][j] = curent * sampledColor[2];
-                             sum = 0.0;
-                             for (int i=0 ; i<radius ; i++) {
-                                 for (int j=0 ; j<radius ; j++) {
-                                     sum +=colorR[i][j];
-                                 }
-
-                             }
-                             dst.at<Vec3b>(y, x)[0] = int(sum);
-                             sum = 0.0;
-                             for (int i=0 ; i<radius ; i++) {
-                                 for (int j=0 ; j<radius ; j++) {
-                                     sum +=colorG[i][j];
-                                 }
-
-                             }
-                             dst.at<Vec3b>(y, x)[1] = int(sum);
-                             sum = 0.0;
-                             for (int i=0 ; i<radius ; i++) {
-                                 for (int j=0 ; j<radius ; j++) {
-                                     sum +=colorR[i][j];
-                                 }
-
-                             }
-                             dst.at<Vec3b>(y, x)[2] = int(sum);
-                         } catch (Exception e) {
-                             cout<<e.msg;
-                         }
-                     }
-                 }
-             }
-         }
-         imshow( "Gaussian_Filter_image", dst);
+//         for (x=1 ; x<image.cols-1 ; x++) {
+//             for (y=1 ; y<image.rows-1 ; y++) {
+//                 for(k=0; k< 3; k++) { // for each channel
+//                     sum = 0;
+//                     for(i=x-step; i<x+step; i++){
+//                         for(j = y-step; j<y+step; j++) {
+//                             sum += image.at<Vec3b>(i, j)[k];
+//                         }
+//                     }
+//                     cout<<sum;
+//                     dst.at<Vec3b>(x, y)[k] = sum;
+//                 }
+//             }
+//         }
+//         imshow( "Gaussian_Filter_image", dst);
     }
 };
 

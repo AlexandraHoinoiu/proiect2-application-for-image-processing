@@ -20,8 +20,8 @@ protected:
     string image_path;
     Mat image;
 public:
-    Filter(string path){
-        this->image_path = path;
+    Filter(string image_path){
+        this->image_path = image_path;
         this->setImage();
     }
     void setImage() {

@@ -23,7 +23,7 @@ public:
     {
         // Load an image
         this->image = imread(image_path, IMREAD_COLOR);
-
+        bool k = !image.data;
         if( !image.data )
         { exit(1); }
     }
