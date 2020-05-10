@@ -27,18 +27,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    SaltPepperNoise noise_salt_pepper("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
-    noise_salt_pepper.applyNoise(20);
-    MedianFilter median_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\Image_with_noise_salt_and_pepper.jpg");
-    median_filter.applyFilter();
-    MeanFilter mean_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\Image_with_noise_salt_and_pepper.jpg");
-    mean_filter.applyFilter();
-    RGBChannels rgb("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
-    rgb.get_R_Channel();
-    rgb.get_G_Channel();
-    rgb.get_B_Channel();
-//    GaussianFilter gaussian_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
-//    gaussian_filter.applyFilter(5, 1.5);
+//    SaltPepperNoise noise_salt_pepper("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+//    noise_salt_pepper.applyNoise(20);
+//    MedianFilter median_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\Image_with_noise_salt_and_pepper.jpg");
+//    median_filter.applyFilter();
+//    MeanFilter mean_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\Image_with_noise_salt_and_pepper.jpg");
+//    mean_filter.applyFilter();
+//    RGBChannels rgb("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+//    rgb.get_R_Channel();
+//    rgb.get_G_Channel();
+//    rgb.get_B_Channel();
+    GaussianFilter gaussian_filter("C:\\Users\\alexandra.hoinoiu\\Desktop\\an3 sem2\\proiect2\\proiect2\\fruits.jpg");
+    gaussian_filter.applyFilter();
 
 
 }
