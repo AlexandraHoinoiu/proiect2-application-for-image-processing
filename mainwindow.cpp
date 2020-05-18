@@ -9,6 +9,7 @@
 #include <vector>
 #include <cmath>
 #include "resize.h"
+#include "decrease.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
@@ -41,8 +42,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //    GaussianFilter gaussian_filter("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg");
 //    gaussian_filter.applyFilter(5, 1.5);
 */
-    Resize resize("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg",3);
-    resize.resize();
+   // Resize resize ("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg",3);
+ //   resize.resize();
+    Decrease decrease("C:\\Users\\Alex\\Desktop\\proiect 2\\proiect2-application-for-image-processing\\fruits.jpg",3);
+    decrease.decrease();
 }
 
 MainWindow::~MainWindow()

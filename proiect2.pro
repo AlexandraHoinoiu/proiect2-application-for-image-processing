@@ -20,6 +20,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    decrease.h \
     filter.h \
     gaussianfilter.h \
     mainwindow.h \
