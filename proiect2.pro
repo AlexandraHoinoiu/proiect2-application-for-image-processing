@@ -26,7 +26,7 @@ HEADERS += \
     mainwindow.h \
     meanfilter.h \
     medianfilter.h \
-    resize.h \
+    expand.h \
     rgbchannels.h \
     saltpeppernoise.h
 

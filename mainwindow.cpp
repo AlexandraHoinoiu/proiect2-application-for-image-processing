@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "resize.h"
+#include "expand.h"
 #include "decrease.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>

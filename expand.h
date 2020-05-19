@@ -1,12 +1,12 @@
-#ifndef RESIZE_H
-#define RESIZE_H
+#ifndef EXPAND_H
+#define EXPAND_H
 #include <iostream>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
 using namespace std;
 using namespace cv;
 
-class Resize
+class Expand
 {
 private:
     string image_path;
@@ -50,4 +50,4 @@ public:
 
 };
 
-#endif // RESIZE_H
+#endif // EXPAND_H
