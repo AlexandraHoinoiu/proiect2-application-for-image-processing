@@ -10,8 +10,6 @@ using namespace cv;
 
 class MedianFilter:public Filter
 {
-public:
-    MedianFilter(string image_path):Filter(image_path){};
     void insertionSort(int arr[])
     {
         int i, key, j;
@@ -27,6 +25,8 @@ public:
             arr[j + 1] = key;
         }
     }
+public:
+    MedianFilter(string image_path):Filter(image_path){};
     void applyFilter()
     {
         Mat dst;

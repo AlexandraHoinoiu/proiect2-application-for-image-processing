@@ -4,30 +4,19 @@
 #include <stdlib.h>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
-
+#include<noise.h>
 using namespace std;
 using namespace cv;
 
-class SaltPepperNoise
+class SaltPepperNoise: Noise
 {
-    string image_path;
-    Mat image;
+    int percentage;
 public:
-    SaltPepperNoise(string path)
+    SaltPepperNoise(string path, int percentage):Noise(path)
     {
-        this->image_path = path;
-        this->setImage();
+        this ->percentage = percentage;
     }
-
-    void setImage()
-    {
-        // Load an image
-        this->image = imread(image_path, IMREAD_COLOR);
-
-        if( !image.data )
-        { exit(1); }
-    }
-    void applyNoise(int percentage)
+    void applyNoise()
     {
         Mat dst;
         image.copyTo(dst);

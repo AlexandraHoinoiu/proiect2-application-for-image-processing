@@ -19,10 +19,12 @@ class GaussianFilter : public Filter
 private:
     int radius = 9;
     double kernel[100][100];
-    float sigma = 1.5;
+    float sigma;
 
     public:
-    GaussianFilter(string image_path):Filter(image_path){};
+    GaussianFilter(string image_path, float sigma = 1.5):Filter(image_path){
+        this->sigma = sigma;
+    };
 
     double getModel(double x, double y)
     {

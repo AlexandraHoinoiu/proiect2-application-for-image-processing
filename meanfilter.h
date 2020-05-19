@@ -10,8 +10,6 @@ using namespace cv;
 
 class MeanFilter: public Filter
 {
-public:
-    MeanFilter(string image_path):Filter(image_path){};
     float mean(int arr[])
         {
             int i, avr = 0;
@@ -21,6 +19,8 @@ public:
             }
             return avr/9;
         }
+public:
+    MeanFilter(string image_path):Filter(image_path){};
         void applyFilter()
         {
             Mat dst;

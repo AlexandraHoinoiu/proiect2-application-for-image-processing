@@ -16,22 +16,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    decreasepage.cpp \
+    expandpage.cpp \
+    gaussianfilterpage.cpp \
+    gaussiannoisepage.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    saltandpeppernoisepage.cpp
 
 HEADERS += \
     decrease.h \
+    decreasepage.h \
+    expandpage.h \
     filter.h \
     gaussianfilter.h \
+    gaussianfilterpage.h \
+    gaussiannoisepage.h \
+    gaussianoise.h \
     mainwindow.h \
     meanfilter.h \
     medianfilter.h \
     expand.h \
+    noise.h \
+    processingimage.h \
     rgbchannels.h \
+    saltandpeppernoisepage.h \
     saltpeppernoise.h
 
 FORMS += \
-    mainwindow.ui
+    decreasepage.ui \
+    expandpage.ui \
+    gaussianfilterpage.ui \
+    gaussiannoisepage.ui \
+    mainwindow.ui \
+    saltandpeppernoisepage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -13,10 +13,10 @@ private:
     Mat image;
     int coef;
 public:
-    Resize(string path,int coef)
+    Expand(string path,int coef)
     {
         this->image_path = path;
-        this->coef=coef;
+        this->coef = coef;
         this->setImage();
     }
     void setImage()
@@ -27,10 +27,10 @@ public:
         if( !image.data )
         { exit(1); }
     }
-    void resize(){
+    void expand(){
         Mat M(image.rows*coef,image.cols*coef, CV_8UC3, Scalar(0,0,0));
         int x,y;
-        imshow( "Original_before", image );
+        imshow( "Image_before_expand", image );
             for(int i = 0; i < image.rows*coef; i++) {
                 for(int j = 0; j < image.cols*coef; j++) {
                     for(int k = 0; k < 3; k++) {
@@ -43,7 +43,7 @@ public:
                 }
             }
 
-    imshow( "Original_after", M );
+    imshow( "Image_after_expand", M );
 
 }
 

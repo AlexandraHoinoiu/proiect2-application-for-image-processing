@@ -8,35 +8,19 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <stdio.h>
+#include <filter.h>
 
 using namespace cv;
 using namespace std;
 
-class RGBChannels
+class RGBChannels  : public Filter
 {
-    string image_path;
-    Mat image,zero;
-public:
-    RGBChannels(string path)
-    {
-        this->image_path = path;
-        this->setImage();
-        this->setZero();
-    }
-    void setImage()
-    {
-        // Load an image
-        this->image = imread(image_path, IMREAD_COLOR);
+    string channel;
+    Mat zero;
 
-        if( !image.data )
-        { exit(1); }
-    }
-    void setZero()
-    {
-        zero = Mat::zeros(Size(image.cols, image.rows), CV_8UC1);
-    }
     void get_R_Channel()
     {
+        imshow("Image_with_3_channels", image);
         Mat red_image;
         vector<Mat> rgbChannels(3);
         split(image, rgbChannels);
@@ -47,10 +31,11 @@ public:
 
        /// Merge the three channels
        merge(channels, red_image);
-       imshow("Red", red_image);
+       imshow("Red_channel", red_image);
     }
     void get_G_Channel()
     {
+        imshow("Image_with_3_channels", image);
         Mat green_image;
         vector<Mat> rgbChannels(3);
         split(image, rgbChannels);
@@ -59,10 +44,11 @@ public:
         channels.push_back(rgbChannels[1]);
         channels.push_back(zero);
         merge(channels, green_image);
-        imshow("Green", green_image);
+        imshow("Green_channel", green_image);
     }
     void get_B_Channel()
     {
+        imshow("Image_with_3_channels", image);
         Mat blue_image;
         vector<Mat> rgbChannels(3);
         split(image, rgbChannels);
@@ -71,7 +57,27 @@ public:
         channels.push_back(zero);
         channels.push_back(zero);
         merge(channels, blue_image);
-        imshow("Blue", blue_image);
+        imshow("Blue_channel", blue_image);
+    }
+    void setZero()
+    {
+        zero = Mat::zeros(Size(image.cols, image.rows), CV_8UC1);
+    }
+public:
+    RGBChannels(string image_path, string channel):Filter(image_path){
+        this->channel = channel;
+        this->setZero();
+    }
+    void applyFilter() {
+        if(this->channel == "red") {
+            this->get_R_Channel();
+        } else if (this->channel == "green") {
+            this->get_G_Channel();
+        } else if (this->channel == "blue") {
+            this->get_B_Channel();
+        } else {
+            cout<<"You can chooise only 'red', 'green' or 'blue' color !";
+        }
     }
 };
 
