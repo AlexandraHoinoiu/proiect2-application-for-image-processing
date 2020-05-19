@@ -20,11 +20,13 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    decrease.h \
     filter.h \
     gaussianfilter.h \
     mainwindow.h \
     meanfilter.h \
     medianfilter.h \
+    resize.h \
     rgbchannels.h \
     saltpeppernoise.h
 

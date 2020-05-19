@@ -3,28 +3,15 @@
 #include<iostream>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
+#include <filter.h>
 
 using namespace std;
 using namespace cv;
 
-class MedianFilter
+class MedianFilter:public Filter
 {
-    string image_path;
-    Mat image;
 public:
-    MedianFilter(string path)
-    {
-        this->image_path = path;
-        this->setImage();
-    }
-
-    void setImage() {
-        // Load an image
-        this->image = imread(image_path, IMREAD_COLOR);
-
-        if( !image.data )
-        { exit(1); }
-    }
+    MedianFilter(string image_path):Filter(image_path){};
     void insertionSort(int arr[])
     {
         int i, key, j;
