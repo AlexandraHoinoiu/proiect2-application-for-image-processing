@@ -41,7 +41,7 @@ class GaussiaNoise: public Noise
             p[i] = r - getModel(i);
         }
         factor = *min_element(p, p + 255);
-        factor = factor*256;
+        factor = factor*100;
           try
           {
               for(int i = 0; i < image.rows; i++) {
